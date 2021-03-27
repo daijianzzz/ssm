@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/mvc
+                           http://www.springframework.org/schema/mvc/spring-mvc.xsd
+">
+    <!--1、注解扫描(use-default-filters="false"表示Controller、Service、Component注解都不加载；include-filter表示要加载)-->
+    <context:component-scan base-package="com.test.controller"/>
+  <!--  <context:component-scan base-package="com.test"  use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>-->
+
+    <!--2、开启mvc注解驱动，会默认加载如jackson解析、日期转换的的组件。。。-->
+    <mvc:annotation-driven>
+        <!--注册消息转换器，告知浏览器采用UTF-8字符集（解决响应乱码）-->
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg name="defaultCharset" value="utf-8"/>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <!--3、开启静态文件访问-->
+    <mvc:default-servlet-handler/>
+
+    <!--4、配置视图解析器（没有页面跳转就不要）-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/pages/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+</beans>
